@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: laminas-app
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=local
+    depends_on:
+      - db
+    networks:
+      - laminas-network
+
+  db:
+    image: nouchka/sqlite3
+    container_name: laminas-sqlite
+    volumes:
+      - ./data:/data
+    networks:
+      - laminas-network
+    command: /bin/true
+
+networks:
+  laminas-network:
+    driver: bridge
